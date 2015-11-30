@@ -45,9 +45,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AriClient.cs" />
+    <Compile Include="Bridge.cs" />
+    <Compile Include="Bridges.cs" />
+    <Compile Include="CallerId.cs" />
     <Compile Include="Channel.cs" />
+    <Compile Include="ChannelWrapper.cs" />
     <Compile Include="Channels.cs" />
+    <Compile Include="Dialplan.cs" />
+    <Compile Include="IAriClient.cs" />
+    <Compile Include="IBridges.cs" />
     <Compile Include="IChannels.cs" />
+    <Compile Include="Playback.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -11,16 +11,16 @@ namespace AsteriskWrapper
 {
     public class Channels : IChannels
     {
-        public AriClient AriClient { get; set; }
+        public IAriClient AriClient { get; set; }
 
-        public Channels(AriClient ariClient)
+        public Channels(IAriClient ariClient)
         {
             AriClient = ariClient;
         }
 
-        public Channel this[string channelId]
+        public ChannelWrapper this[string channelId]
         {
-            get { return new Channel(this, channelId); }
+            get { return new ChannelWrapper(this, channelId); }
         }
 
         public Task AnswerAsync(string channelId)
@@ -30,10 +30,27 @@ namespace AsteriskWrapper
 
         public async Task AnswerAsync(string channelId, CancellationToken cancellationToken)
         {
+            var body = new StringContent("", Encoding.UTF8, "application/json");
+
             using (var httpClient = AriClient.CreateHttpClient())
+            using (var response = await httpClient.PostAsync($"/ari/channels/{channelId}/answer", body, cancellationToken))
             {
-                var response = await httpClient.PostAsync($"/ari/channels/{channelId}/answer", new StringContent(""), cancellationToken);
                 response.EnsureSuccessStatusCode();
+            }
+        }
+
+        public Task<IEnumerable<Channel>> GetActiveChannelsAsync()
+        {
+            return GetActiveChannelsAsync(CancellationToken.None);
+        }
+
+        public async Task<IEnumerable<Channel>> GetActiveChannelsAsync(CancellationToken cancellationToken)
+        {
+            using (var httpClient = AriClient.CreateHttpClient())
+            using (var response = await httpClient.GetAsync($"/ari/channels", cancellationToken))
+            {
+                response.EnsureSuccessStatusCode();
+                return JsonConvert.DeserializeObject<Channel[]>(await response.Content.ReadAsStringAsync());
             }
         }
 
@@ -44,13 +61,12 @@ namespace AsteriskWrapper
 
         public async Task<string> GetVariableAsync(string channelId, string variable, CancellationToken cancellationToken)
         {
+            var encodedVariable = Uri.EscapeDataString(variable);
+
             using (var httpClient = AriClient.CreateHttpClient())
+            using (var response = await httpClient.GetAsync($"/ari/channels/{channelId}/variable?variable={encodedVariable}", cancellationToken))
             {
-                var encodedVariable = Uri.EscapeDataString(variable);
-                var response = await httpClient.GetAsync($"/ari/channels/{channelId}/variable?variable={encodedVariable}", cancellationToken);
-
                 response.EnsureSuccessStatusCode();
-
                 return await response.Content.ReadAsStringAsync();
             }
         }
@@ -62,13 +78,31 @@ namespace AsteriskWrapper
 
         public async Task SetVariableAsync(string channelId, string variable, string value, CancellationToken cancellationToken)
         {
-            using (var httpClient = AriClient.CreateHttpClient())
-            {
-                var content = JsonConvert.SerializeObject(new { variable, value });
-                var body = new StringContent(content, Encoding.UTF8, "application/json");
-                var response = await httpClient.PostAsync($"/ari/channels/{channelId}/variable", body, cancellationToken);
+            var content = JsonConvert.SerializeObject(new { variable, value });
+            var body = new StringContent(content, Encoding.UTF8, "application/json");
 
+            using (var httpClient = AriClient.CreateHttpClient())
+            using (var response = await httpClient.PostAsync($"/ari/channels/{channelId}/variable", body, cancellationToken))
+            {
                 response.EnsureSuccessStatusCode();
+            }
+        }
+
+        public Task<Playback> StartPlaybackAsync(string channelId, string media)
+        {
+            return StartPlaybackAsync(channelId, media, CancellationToken.None);
+        }
+
+        public async Task<Playback> StartPlaybackAsync(string channelId, string media, CancellationToken cancellationToken)
+        {
+            var content = JsonConvert.SerializeObject(new { media });
+            var body = new StringContent(content, Encoding.UTF8, "application/json");
+
+            using (var httpClient = AriClient.CreateHttpClient())
+            using (var response = await httpClient.PostAsync($"/ari/channels/{channelId}/play", body, cancellationToken))
+            {
+                response.EnsureSuccessStatusCode();
+                return JsonConvert.DeserializeObject<Playback>(await response.Content.ReadAsStringAsync());
             }
         }
     }

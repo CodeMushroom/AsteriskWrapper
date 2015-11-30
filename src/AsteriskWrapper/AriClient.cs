@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AsteriskWrapper
 {
-    public class AriClient
+    public class AriClient : IAriClient
     {
         public virtual string Username { get; set; }
         public virtual string Password { get; set; }
@@ -20,6 +21,7 @@ namespace AsteriskWrapper
             BaseUri = baseUri;
 
             Channels = new Channels(this);
+            Bridges = new Bridges(this);
         }
 
         public virtual HttpClient CreateHttpClient()
@@ -34,5 +36,7 @@ namespace AsteriskWrapper
         }
 
         public virtual IChannels Channels { get; protected set; }
+
+        public virtual IBridges Bridges { get; protected set; }
     }
 }
