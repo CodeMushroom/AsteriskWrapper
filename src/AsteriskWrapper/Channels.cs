@@ -67,7 +67,7 @@ namespace AsteriskWrapper
             using (var response = await httpClient.GetAsync($"/ari/channels/{channelId}/variable?variable={encodedVariable}", cancellationToken))
             {
                 response.EnsureSuccessStatusCode();
-                return await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<Variable>(await response.Content.ReadAsStringAsync()).Value;
             }
         }
 
