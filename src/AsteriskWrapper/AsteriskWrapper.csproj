@@ -52,6 +52,8 @@
     <Compile Include="ChannelWrapper.cs" />
     <Compile Include="Channels.cs" />
     <Compile Include="Dialplan.cs" />
+    <Compile Include="Exceptions\AsteriskException.cs" />
+    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="IAriClient.cs" />
     <Compile Include="IBridges.cs" />
     <Compile Include="IChannels.cs" />
