@@ -13,7 +13,7 @@ namespace AsteriskWrapper
         public static async Task<Exceptions.AsteriskException> ToExceptionAsync(this HttpResponseMessage response)
         {
             int code = (int)response.StatusCode;
-            dynamic responseContent = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+            dynamic responseContent = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
             string message = responseContent.message;
 
             return new Exceptions.AsteriskException(code, message);

@@ -28,10 +28,10 @@ namespace AsteriskWrapper
             var body = new StringContent(JsonConvert.SerializeObject(new { channel = channelId }), Encoding.UTF8, "application/json");
 
             using (var httpClient = AriClient.CreateHttpClient())
-            using (var response = await httpClient.PostAsync($"/ari/bridges/{bridgeId}/addChannel", body, cancellationToken))
+            using (var response = await httpClient.PostAsync($"/ari/bridges/{bridgeId}/addChannel", body, cancellationToken).ConfigureAwait(false))
             {
                 if (!response.IsSuccessStatusCode)
-                    throw await response.ToExceptionAsync();
+                    throw await response.ToExceptionAsync().ConfigureAwait(false);
             }
         }
 
@@ -60,12 +60,12 @@ namespace AsteriskWrapper
                 bridgeId = "";
 
             using (var httpClient = AriClient.CreateHttpClient())
-            using (var response = await httpClient.PostAsync($"/ari/bridges{bridgeId}", body, cancellationToken))
+            using (var response = await httpClient.PostAsync($"/ari/bridges{bridgeId}", body, cancellationToken).ConfigureAwait(false))
             {
                 if (!response.IsSuccessStatusCode)
-                    throw await response.ToExceptionAsync();
+                    throw await response.ToExceptionAsync().ConfigureAwait(false);
 
-                return JsonConvert.DeserializeObject<Bridge>(await response.Content.ReadAsStringAsync());
+                return JsonConvert.DeserializeObject<Bridge>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
             }
         }
 
@@ -77,10 +77,12 @@ namespace AsteriskWrapper
         public async Task<IEnumerable<Bridge>> GetActiveBridgesAsync(CancellationToken cancellationToken)
         {
             using (var httpClient = AriClient.CreateHttpClient())
-            using (var response = await httpClient.GetAsync($"/ari/bridges", cancellationToken))
+            using (var response = await httpClient.GetAsync($"/ari/bridges", cancellationToken).ConfigureAwait(false))
             {
-                response.EnsureSuccessStatusCode();
-                return JsonConvert.DeserializeObject<Bridge[]>(await response.Content.ReadAsStringAsync());
+                if (!response.IsSuccessStatusCode)
+                    throw await response.ToExceptionAsync().ConfigureAwait(false);
+
+                return JsonConvert.DeserializeObject<Bridge[]>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
             }
         }
 
@@ -94,10 +96,10 @@ namespace AsteriskWrapper
             var body = new StringContent("", Encoding.UTF8, "application/json");
 
             using (var httpClient = AriClient.CreateHttpClient())
-            using (var response = await httpClient.PostAsync($"/ari/bridges/{bridgeId}/moh", body, cancellationToken))
+            using (var response = await httpClient.PostAsync($"/ari/bridges/{bridgeId}/moh", body, cancellationToken).ConfigureAwait(false))
             {
                 if (!response.IsSuccessStatusCode)
-                    throw await response.ToExceptionAsync();
+                    throw await response.ToExceptionAsync().ConfigureAwait(false);
             }
         }
 
@@ -109,10 +111,10 @@ namespace AsteriskWrapper
         public async Task StopMusicOnHoldAsync(string bridgeId, CancellationToken cancellationToken)
         {
             using (var httpClient = AriClient.CreateHttpClient())
-            using (var response = await httpClient.DeleteAsync($"/ari/bridges/{bridgeId}/moh", cancellationToken))
+            using (var response = await httpClient.DeleteAsync($"/ari/bridges/{bridgeId}/moh", cancellationToken).ConfigureAwait(false))
             {
                 if (!response.IsSuccessStatusCode)
-                    throw await response.ToExceptionAsync();
+                    throw await response.ToExceptionAsync().ConfigureAwait(false);
             }
         }
     }

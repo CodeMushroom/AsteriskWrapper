@@ -25,12 +25,12 @@ namespace AsteriskWrapper
         public async Task<Playback> GetDetailsAsync(string playbackId, CancellationToken cancellationToken)
         {
             using (var httpClient = AriClient.CreateHttpClient())
-            using (var response = await httpClient.GetAsync($"/ari/playbacks/{playbackId}", cancellationToken))
+            using (var response = await httpClient.GetAsync($"/ari/playbacks/{playbackId}", cancellationToken).ConfigureAwait(false))
             {
                 if (!response.IsSuccessStatusCode)
-                    throw await response.ToExceptionAsync();
+                    throw await response.ToExceptionAsync().ConfigureAwait(false);
 
-                return JsonConvert.DeserializeObject<Playback>(await response.Content.ReadAsStringAsync());
+                return JsonConvert.DeserializeObject<Playback>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
             }
         }
     }
