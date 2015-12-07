@@ -36,7 +36,7 @@ namespace AsteriskWrapper
             using (var response = await httpClient.PostAsync($"/ari/channels/{channelId}/answer", body, cancellationToken))
             {
                 if (!response.IsSuccessStatusCode)
-                    throw await response.ToException();
+                    throw await response.ToExceptionAsync();
             }
         }
 
@@ -51,7 +51,7 @@ namespace AsteriskWrapper
             using (var response = await httpClient.GetAsync($"/ari/channels", cancellationToken))
             {
                 if (!response.IsSuccessStatusCode)
-                    throw await response.ToException();
+                    throw await response.ToExceptionAsync();
 
                 return JsonConvert.DeserializeObject<Channel[]>(await response.Content.ReadAsStringAsync());
             }
@@ -70,9 +70,24 @@ namespace AsteriskWrapper
             using (var response = await httpClient.GetAsync($"/ari/channels/{channelId}/variable?variable={encodedVariable}", cancellationToken))
             {
                 if (!response.IsSuccessStatusCode)
-                    throw await response.ToException();
+                    throw await response.ToExceptionAsync();
 
                 return JsonConvert.DeserializeObject<Variable>(await response.Content.ReadAsStringAsync()).Value;
+            }
+        }
+
+        public Task HangupAsync(string channelId)
+        {
+            return HangupAsync(channelId, CancellationToken.None);
+        }
+
+        public async Task HangupAsync(string channelId, CancellationToken cancellationToken)
+        {
+            using (var httpClient = AriClient.CreateHttpClient())
+            using (var response = await httpClient.DeleteAsync($"/ari/channels/{channelId}", cancellationToken))
+            {
+                if (!response.IsSuccessStatusCode)
+                    throw await response.ToExceptionAsync();
             }
         }
 
@@ -90,7 +105,7 @@ namespace AsteriskWrapper
             using (var response = await httpClient.PostAsync($"/ari/channels/{channelId}/variable", body, cancellationToken))
             {
                 if (!response.IsSuccessStatusCode)
-                    throw await response.ToException();
+                    throw await response.ToExceptionAsync();
             }
         }
 
@@ -108,7 +123,7 @@ namespace AsteriskWrapper
             using (var response = await httpClient.PostAsync($"/ari/channels/{channelId}/play", body, cancellationToken))
             {
                 if (!response.IsSuccessStatusCode)
-                    throw await response.ToException();
+                    throw await response.ToExceptionAsync();
 
                 return JsonConvert.DeserializeObject<Playback>(await response.Content.ReadAsStringAsync());
             }

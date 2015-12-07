@@ -22,6 +22,7 @@ namespace AsteriskWrapper
 
             Channels = new Channels(this);
             Bridges = new Bridges(this);
+            Playbacks = new Playbacks(this);
         }
 
         public virtual HttpClient CreateHttpClient()
@@ -38,5 +39,7 @@ namespace AsteriskWrapper
         public virtual IChannels Channels { get; protected set; }
 
         public virtual IBridges Bridges { get; protected set; }
+
+        public virtual IPlaybacks Playbacks { get; protected set; }
     }
 }

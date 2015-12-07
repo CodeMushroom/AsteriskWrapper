@@ -10,7 +10,7 @@ namespace AsteriskWrapper
 {
     internal static class ExtensionMethods
     {
-        public static async Task<Exceptions.AsteriskException> ToException(this HttpResponseMessage response)
+        public static async Task<Exceptions.AsteriskException> ToExceptionAsync(this HttpResponseMessage response)
         {
             int code = (int)response.StatusCode;
             dynamic responseContent = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());

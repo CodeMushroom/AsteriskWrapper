@@ -37,6 +37,16 @@ namespace AsteriskWrapper
             return Channels.GetVariableAsync(ChannelId, variable, cancellationToken);
         }
 
+        public Task HangupAsync()
+        {
+            return Channels.HangupAsync(ChannelId);
+        }
+
+        public Task HangupAsync(CancellationToken cancellationToken)
+        {
+            return Channels.HangupAsync(ChannelId, cancellationToken);
+        }
+
         public Task SetVariableAsync(string variable, string value)
         {
             return Channels.SetVariableAsync(ChannelId, variable, value);

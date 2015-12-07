@@ -7,5 +7,6 @@ namespace AsteriskWrapper
         HttpClient CreateHttpClient();
         IChannels Channels { get; }
         IBridges Bridges { get; }
+        IPlaybacks Playbacks { get; }
     }
 }

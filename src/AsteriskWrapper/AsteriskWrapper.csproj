@@ -57,7 +57,9 @@
     <Compile Include="IAriClient.cs" />
     <Compile Include="IBridges.cs" />
     <Compile Include="IChannels.cs" />
+    <Compile Include="IPlaybacks.cs" />
     <Compile Include="Playback.cs" />
+    <Compile Include="Playbacks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Variable.cs" />
   </ItemGroup>
