@@ -146,12 +146,12 @@ namespace AsteriskWrapper
             }
         }
 
-        public Task<string> CreateChannel(string endpoint, string extension, string context, string priority, string stasisApp, CallerId callerId)
+        public Task<string> CreateChannel(string endpoint, string extension, string context, string priority, string app, CallerId callerId, string label, string appArgs, int timeout, string channelId, string otherChannelId, string originator)
         {
-            CreateChannel(endpoint, extension, context, priority, stasisApp, callerId, CancellationToken.None);
+            return CreateChannel(endpoint, extension, context, priority, app, callerId, label, appArgs, timeout, channelId, otherChannelId, originator, CancellationToken.None);
         }
 
-        public async Task<string> CreateChannel(string endpoint, string extension, string context, string priority, string stasisApp, CallerId callerId, CancellationToken cancellationToken)
+        public async Task<string> CreateChannel(string endpoint, string extension, string context, string priority, string app, CallerId callerId, string label, string appArgs, int timeout, string channelId, string otherChannelId, string originator, CancellationToken cancellationToken)
         {
             var content = JsonConvert.SerializeObject(new
             {
@@ -159,8 +159,13 @@ namespace AsteriskWrapper
                 extension = extension,
                 context = context,
                 priority = priority,
-                app = stasisApp,
-                callerid = $"{callerId.Name}<{callerId.Number}>"
+                app = app,
+                callerid = $"{callerId.Name}<{callerId.Number}>",
+                label = label,
+                appArgs = appArgs,
+                timeout = timeout,
+                channelId = channelId,
+                otherChannelId = otherChannelId
             });
             var body = new StringContent(content, Encoding.UTF8, "application/json");
 

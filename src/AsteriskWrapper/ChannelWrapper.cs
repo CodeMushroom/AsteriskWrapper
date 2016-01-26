@@ -72,10 +72,9 @@ namespace AsteriskWrapper
             return Channels.GetChannelAsync(ChannelId);
         }
 
-        public Task<string> CreateChannel(string endpoint, string extension, string context, string priority, string stasisApp, CallerId callerId)
+        public Task<string> CreateChannel(string endpoint, string extension, string context, string priority, string app, CallerId callerId, string label = "", string appArgs = "", int timeout = 30, string channelId = "", string otherChannelId = "", string originator = "")
         {
-            return Channels.CreateChannel(endpoint, extension, context, priority, stasisApp, callerId);
+            return Channels.CreateChannel(endpoint, extension, context, priority, app, callerId);
         }
-
     }
 }
