@@ -23,5 +23,7 @@ namespace AsteriskWrapper
         Task<Playback> StartPlaybackAsync(string channelId, string media, CancellationToken cancellationToken);
         Task<Channel> GetChannelAsync(string channelId);
         Task<Channel> GetChannelAsync(string channelId, CancellationToken cancellationToken);
+        Task<string> CreateChannel(string endpoint, string extension, string context, string priority, string stasisApp, CallerId callerId);
+        Task<string> CreateChannel(string endpoint, string extension, string context, string priority, string stasisApp, CallerId callerId, CancellationToken cancellationToken);
     }
 }
