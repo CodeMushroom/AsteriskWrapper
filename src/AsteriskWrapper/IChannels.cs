@@ -21,5 +21,7 @@ namespace AsteriskWrapper
         Task SetVariableAsync(string channelId, string variable, string value, CancellationToken cancellationToken);
         Task<Playback> StartPlaybackAsync(string channelId, string media);
         Task<Playback> StartPlaybackAsync(string channelId, string media, CancellationToken cancellationToken);
+        Task<Channel> GetChannelAsync(string channelId);
+        Task<Channel> GetChannelAsync(string channelId, CancellationToken cancellationToken);
     }
 }

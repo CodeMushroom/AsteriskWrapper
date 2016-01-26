@@ -128,5 +128,22 @@ namespace AsteriskWrapper
                 return JsonConvert.DeserializeObject<Playback>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
             }
         }
+
+        public Task<Channel> GetChannelAsync(string channelId)
+        {
+            return GetChannelAsync(channelId, CancellationToken.None);
+        }
+
+        public async Task<Channel> GetChannelAsync(string channelId, CancellationToken cancellationToken)
+        {
+            using (var httpClient = AriClient.CreateHttpClient())
+            using (var response = await httpClient.GetAsync($"/ari/channels/{channelId}", cancellationToken).ConfigureAwait(false))
+            {
+                if (!response.IsSuccessStatusCode)
+                    throw await response.ToExceptionAsync().ConfigureAwait(false);
+
+                return JsonConvert.DeserializeObject<Channel>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+            }
+        }
     }
 }

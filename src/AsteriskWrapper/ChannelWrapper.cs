@@ -66,5 +66,10 @@ namespace AsteriskWrapper
         {
             return Channels.StartPlaybackAsync(ChannelId, media, cancellationToken);
         }
+
+        public Task<Channel> GetChannel()
+        {
+            return Channels.GetChannelAsync(ChannelId);
+        }
     }
 }
