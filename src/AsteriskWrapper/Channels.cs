@@ -146,26 +146,26 @@ namespace AsteriskWrapper
             }
         }
 
-        public Task<string> CreateChannel(string endpoint, string extension, string context, string priority, string app, CallerId callerId, string label, string appArgs, int timeout, string channelId, string otherChannelId, string originator)
+        public Task<string> CreateChannelAsync(OriginateParameters originate)
         {
-            return CreateChannel(endpoint, extension, context, priority, app, callerId, label, appArgs, timeout, channelId, otherChannelId, originator, CancellationToken.None);
+            return CreateChannelAsync(originate, CancellationToken.None);
         }
 
-        public async Task<string> CreateChannel(string endpoint, string extension, string context, string priority, string app, CallerId callerId, string label, string appArgs, int timeout, string channelId, string otherChannelId, string originator, CancellationToken cancellationToken)
+        public async Task<string> CreateChannelAsync(OriginateParameters originate, CancellationToken cancellationToken)
         {
             var content = JsonConvert.SerializeObject(new
             {
-                endpoint = endpoint,
-                extension = extension,
-                context = context,
-                priority = priority,
-                app = app,
-                callerid = $"{callerId.Name}<{callerId.Number}>",
-                label = label,
-                appArgs = appArgs,
-                timeout = timeout,
-                channelId = channelId,
-                otherChannelId = otherChannelId
+                endpoint = originate.Endpoint,
+                extension = originate.Extension,
+                context = originate.Context,
+                priority = originate.Priority,
+                app = originate.App,
+                appArgs = originate.AppArgs,
+                callerid = $"{originate.CallerId.Name}<{originate.CallerId.Number}>",
+                label = originate.Label,
+                timeout = originate.Timeout,
+                channelId = originate.ChannelId,
+                otherChannelId = originate.OtherChannelId
             });
             var body = new StringContent(content, Encoding.UTF8, "application/json");
 

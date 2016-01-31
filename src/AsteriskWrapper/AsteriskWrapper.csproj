@@ -58,6 +58,7 @@
     <Compile Include="IBridges.cs" />
     <Compile Include="IChannels.cs" />
     <Compile Include="IPlaybacks.cs" />
+    <Compile Include="OriginateParameters.cs" />
     <Compile Include="Playback.cs" />
     <Compile Include="Playbacks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
